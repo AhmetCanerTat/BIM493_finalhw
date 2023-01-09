@@ -1,10 +1,17 @@
+import 'package:bim493_finalhw/firebase_options.dart';
+import 'package:bim493_finalhw/splashScreen/splashScreen.dart';
 import 'package:bim493_finalhw/widgets/ortalama_app.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
 import 'constants/app_constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -17,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: OrtalamaHesapla(),
+      home: MySplashScreen(),
     );
   }
 }
