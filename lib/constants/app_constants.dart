@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Sabitler {
   
-  static const anaRenk = Colors.purple;
+  static const anaRenk = Color.fromRGBO(33, 217, 233, 1);
 
   static TextStyle textStyle(
           double size, FontWeight fontWeight, Color colorName) =>

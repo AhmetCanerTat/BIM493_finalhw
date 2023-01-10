@@ -20,6 +20,7 @@ class Courses extends StatefulWidget {
 
 class _CoursesState extends State<Courses> {
   List<Course> allCourses = [];
+  bool courseSave = false;
   var formKey = GlobalKey<FormState>();
   List<Ders> tumDersler = [];
 
@@ -46,19 +47,9 @@ class _CoursesState extends State<Courses> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(flex: 2, child: myForm()),
-              Expanded(
-                child: OrtalamaGoster(
-                  dersSayisi: tumDersler.length,
-                  ortalama: ortalamaHesapla(),
-                ),
-              )
-            ],
-          ),
+          Expanded(flex: 2, child: myForm()),
           Expanded(
+            flex: 10,
             child: tumDersler.length > 0
                 ? ListView.builder(
                     itemBuilder: (context, index) => Dismissible(
@@ -70,7 +61,7 @@ class _CoursesState extends State<Courses> {
                         });
                       },
                       child: Padding(
-                        padding: EdgeInsets.all(2),
+                        padding: const EdgeInsets.all(2),
                         child: Card(
                           child: ListTile(
                             title: Text(tumDersler[index].ad),
@@ -90,7 +81,7 @@ class _CoursesState extends State<Courses> {
                     itemCount: tumDersler.length,
                   )
                 : Container(
-                    margin: EdgeInsets.all(24),
+                    margin: const EdgeInsets.all(24),
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
@@ -118,53 +109,97 @@ class _CoursesState extends State<Courses> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: _buildTextFormField(),
+                  ),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Sabitler.anaRenk),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ))),
+                    onPressed: (() {
+                      setState(() {
+                        courseSave = true;
+                      });
+                    }),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const <Widget>[
+                          Text("Kaydet", style: TextStyle(color: Colors.white)),
+                          Expanded(
+                            child: Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ]),
+                  ),
+                ))
+              ],
             ),
-            child: _buildTextFormField(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
+          courseSave
+              ? (Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          child: _buildHarfler(),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          child: _buildKrediler(),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState!.save();
+                            var eklenecekDers =
+                                Ders(girilenDersAdi, secilen, secilenKredi);
+                            tumDersler.insert(0, eklenecekDers);
+                            ortalamaHesapla();
+                            setState(() {});
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          color: Sabitler.anaRenk,
+                          size: 30,
+                        ),
+                      ),
+                    ],
                   ),
-                  child: _buildHarfler(),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
-                  child: _buildKrediler(),
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    var eklenecekDers =
-                        Ders(girilenDersAdi, secilen, secilenKredi);
-                    tumDersler.insert(0, eklenecekDers);
-                    ortalamaHesapla();
-                    setState(() {});
-                  }
-                },
-                icon: Icon(
-                  Icons.arrow_forward_ios_sharp,
-                  color: Sabitler.anaRenk,
-                  size: 30,
-                ),
-              ),
-            ],
-          ),
+                ))
+              : Spacer()
         ],
       ),
     );
@@ -185,13 +220,13 @@ class _CoursesState extends State<Courses> {
           hintText: 'Matematik',
           border: OutlineInputBorder(
             borderRadius: Sabitler.borderRadius,
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               width: 0,
               style: BorderStyle.none,
             ),
           ),
           filled: true,
-          fillColor: Sabitler.anaRenk.shade100.withOpacity(0.3)),
+          fillColor: Sabitler.anaRenk.withOpacity(0.3)),
     );
   }
 
@@ -199,12 +234,12 @@ class _CoursesState extends State<Courses> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.shade100.withOpacity(0.4),
+        color: Sabitler.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<double>(
-        iconEnabledColor: Sabitler.anaRenk.shade200,
+        iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
         items: DataHelper.tumDersHarfleri(),
         underline: Container(),
@@ -223,12 +258,12 @@ class _CoursesState extends State<Courses> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.shade100.withOpacity(0.4),
+        color: Sabitler.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<double>(
-        iconEnabledColor: Sabitler.anaRenk.shade200,
+        iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
         items: DataHelper.tumKrediler(),
         underline: Container(),
