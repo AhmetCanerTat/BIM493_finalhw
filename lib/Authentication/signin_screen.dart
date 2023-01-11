@@ -84,7 +84,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   .setString("email", snapshot.data()!["Email"]);
               await sharedPreferences!
                   .setString("name", snapshot.data()!["Name"]);
-              Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()),
+              );
             }
           else{
             firebaseUser.signOut();
