@@ -1,6 +1,6 @@
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/courses.dart';
-import 'package:bim493_finalhw/widgets/enter_course.dart';
+
 import 'package:bim493_finalhw/widgets/ortalama_app.dart';
 import 'package:flutter/material.dart';
 import 'pages/grade_details.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: Courses(),
+      home: AddCourse(),
     );
   }
 }
