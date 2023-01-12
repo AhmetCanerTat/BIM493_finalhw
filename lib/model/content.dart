@@ -8,6 +8,16 @@ class Content extends Course {
   Content(this.name, this.ratio) : super('');
 
   double calculate(double ratio, int grade) {
-    return grade / ratio;
+    return grade * ratio;
+  }
+
+  @override
+  toJson() {
+   
+    return {
+      "name":name,
+      "ratio":ratio,
+      "grade":grade,
+    };
   }
 }
