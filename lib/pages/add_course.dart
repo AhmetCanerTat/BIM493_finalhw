@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 import '../helper/data_helper.dart';
@@ -15,6 +18,14 @@ class AddCourse extends StatefulWidget {
 }
 
 class _AddCourseState extends State<AddCourse> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  void saveCourses() async {
+    final SharedPreferences prefs = await _prefs;
+    List courses = allCourses.map((e) => e.toJson()).toList();
+    prefs.setString("courses", jsonEncode(courses));
+  }
+
   final fieldText = TextEditingController();
   List<Course> allCourses = [];
   List<Content> allContents = [];
@@ -37,6 +48,7 @@ class _AddCourseState extends State<AddCourse> {
     fieldText.clear();
     courseSave = false;
     allContents = [];
+    setState(() {});
   }
 
   @override
@@ -108,8 +120,14 @@ class _AddCourseState extends State<AddCourse> {
           ),
         ],
       ),
-      floatingActionButton: const FloatingActionButton.extended(onPressed: null,//ekleme yapilacak 
-      backgroundColor: Sabitler.anaRenk, label:Text( "Dersi Kaydet"),  ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (() {
+          allCourses.insert(0, chosenCourse!);
+          saveCourses();
+          formReset();
+        }), //ekleme yapilacak
+        backgroundColor: Sabitler.anaRenk, label: Text("Dersi Kaydet"),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
@@ -152,8 +170,7 @@ class _AddCourseState extends State<AddCourse> {
                         chosenCourse = Course(enteredCourseName!);
                         courseSave = true;
                       } else {
-                       formReset();
-                        
+                        formReset();
                       }
                       setState(() {});
                     }),
@@ -206,7 +223,7 @@ class _AddCourseState extends State<AddCourse> {
                                 Content(chosenContentName, chosenContentRatio);
                             chosenCourse?.addContent(content);
                             setState(() {
-                              allContents.insert(0, content);                            
+                              allContents.insert(0, content);
                             });
                           }
                         },

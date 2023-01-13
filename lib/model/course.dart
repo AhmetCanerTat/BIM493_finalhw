@@ -9,25 +9,24 @@ class Course {
     contents.add(content);
   }
 
-  takeContentList(contents){
+  takeContentList(contents) {}
 
-  }
-
-  toJson(){
-    var newList = contents.map((e) => e.toJson()).toList();
-    return{
-      "id": name,
-      "name":name,
-      "courses":newList,
+  Map toJson() {
+    contents != null ? contents.map((e) => e.toJson()).toList() : null;
+    return {
+      'name': name,
+      'contents': contents,
     };
   }
 
-  fromJson(jsonData){
-    Course course = Course(jsonData['title']);
-    List tempList = jsonData['courses'];
-    tempList.map;
-
+  factory Course.fromJson(json) {
+    Course course = Course(json['name']);
+    var contentObjsJson = json['contents'] as List;
+    print(contentObjsJson);
+    for (var contentJson in contentObjsJson) {
+      Content content = Content.fromJson(contentJson);
+      course.addContent(content);
+    }
     return course;
   }
-
 }
