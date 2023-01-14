@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bim493_finalhw">
    <application
+
         android:label="bim493_finalhw"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
