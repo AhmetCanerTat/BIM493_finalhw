@@ -9,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/app_constants.dart';
 import '../model/course.dart';
 
 class Courses extends StatefulWidget {
@@ -25,12 +26,14 @@ class _CoursesState extends State<Courses> {
   void getCourses() async {
     final prefs = await SharedPreferences.getInstance();
     String? coursesJson = prefs.getString('courses');
-    List coursesList = jsonDecode(coursesJson ?? "");
+    if (coursesJson != null) {
+      List coursesList = jsonDecode(coursesJson);
 
-    for (var course in coursesList) {
-      setState(() {
-        allCourses.add(Course.fromJson(course));
-      });
+      for (var course in coursesList) {
+        setState(() {
+          allCourses.add(Course.fromJson(course));
+        });
+      }
     }
   }
 
@@ -44,23 +47,38 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text(allCourses.first.contents.first.grade.toString()),
-        // ),
-        body: !allCourses.isEmpty
-            ? ListView.builder(
-                itemCount: allCourses.length,
-                itemBuilder: ((context, index) =>
-                    CourseCard(course: allCourses[index])))
-            : null);
+      body: allCourses.isNotEmpty
+          ? ListView.builder(
+              itemCount: allCourses.length,
+              itemBuilder: ((context, index) => CourseCard(
+                  course: allCourses[index], allCourses: allCourses)))
+          : Container(
+              margin: const EdgeInsets.all(24),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(('Lutfen ders ekleyiniz'),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5!
+                            .copyWith(color: Sabitler.anaRenk)),
+                  ),
+                ),
+              ),
+            ),
+    );
   }
 }
 
 class CourseCard extends StatefulWidget {
   final Course course;
+  final List<Course> allCourses;
   const CourseCard({
     Key? key,
     required this.course,
+    required this.allCourses,
   }) : super(key: key);
 
   @override
@@ -68,14 +86,21 @@ class CourseCard extends StatefulWidget {
 }
 
 class _CourseCardState extends State<CourseCard> {
+  Future<void> saveCourses() async {
+    final prefs = await SharedPreferences.getInstance();
+    List courses = widget.allCourses.map((e) => e.toJson()).toList();
+    prefs.setString("courses", jsonEncode(courses));
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GradeDetails(course: widget.course)));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GradeDetails(course: widget.course)))
+            .then((value) => saveCourses());
       },
       child: Padding(
         padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
