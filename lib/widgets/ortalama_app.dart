@@ -28,6 +28,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        toolbarHeight: 50,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Center(
@@ -185,7 +186,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
             ),
           ),
           filled: true,
-          fillColor: Sabitler.anaRenk.shade100.withOpacity(0.3)),
+          fillColor: Sabitler.anaRenk.withOpacity(0.3)),
     );
   }
 
@@ -193,12 +194,12 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.shade100.withOpacity(0.4),
+        color: Sabitler.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<double>(
-        iconEnabledColor: Sabitler.anaRenk.shade200,
+        iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
         items: DataHelper.tumDersHarfleri(),
         underline: Container(),
@@ -217,12 +218,12 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.shade100.withOpacity(0.4),
+        color: Sabitler.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<double>(
-        iconEnabledColor: Sabitler.anaRenk.shade200,
+        iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
         items: DataHelper.tumKrediler(),
         underline: Container(),
