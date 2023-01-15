@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:bim493_finalhw/model/course.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,14 +8,46 @@ import '../constants/app_constants.dart';
 import '../model/content.dart';
 import '../model/course.dart';
 
-class GradeDetails extends StatelessWidget {
+class GradeDetails extends StatefulWidget {
   final Course course;
 
   GradeDetails({super.key, required this.course});
 
   @override
+  State<GradeDetails> createState() => _GradeDetailsState();
+}
+
+class _GradeDetailsState extends State<GradeDetails> {
+  late bool AllGradesEntered = false;
+
+  double gradeAverage() {
+    double gradeAverage = 0;
+    for (Content content in widget.course.contents) {
+      gradeAverage += content.calculate();
+    }
+    widget.course.gradeAverage = gradeAverage;
+    return gradeAverage;
+  }
+
+  void isAllGradesEntered() {
+    for (Content content in widget.course.contents) {
+      if (content.grade == 0.0) {
+        AllGradesEntered = false;
+      } else {
+        AllGradesEntered = true;
+      }
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isAllGradesEntered();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -48,19 +82,21 @@ class GradeDetails extends StatelessWidget {
                     Spacer(),
                     Padding(
                       padding: EdgeInsets.only(left: 30),
-                      child: Text("100%",
-                          style: GoogleFonts.montserrat(
-                            textStyle: TextStyle(
-                                color: Color.fromRGBO(48, 64, 98, 1),
-                                fontSize: 40,
-                                fontWeight: FontWeight.w700),
-                          )),
+                      child: AllGradesEntered
+                          ? (Text((gradeAverage().toString()),
+                              style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    color: Color.fromRGBO(48, 64, 98, 1),
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700),
+                              )))
+                          : null,
                     ),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.only(left: 30),
                       child: Text(
-                        course.name,
+                        widget.course.name,
                         style: GoogleFonts.montserrat(
                             textStyle: TextStyle(
                                 color: Color.fromRGBO(48, 64, 98, 1),
@@ -73,12 +109,13 @@ class GradeDetails extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: !course.contents.isEmpty
+            child: !widget.course.contents.isEmpty
                 ? ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: course.contents.length,
-                    itemBuilder: (context, index) =>
-                        GradeCard(content: course.contents[index]),
+                    itemCount: widget.course.contents.length,
+                    itemBuilder: (context, index) => GradeCard(
+                        content: widget.course.contents[index],
+                        function: isAllGradesEntered),
                   )
                 : Container(),
           )
@@ -90,7 +127,8 @@ class GradeDetails extends StatelessWidget {
 
 class GradeCard extends StatefulWidget {
   final Content content;
-  const GradeCard({super.key, required this.content});
+  final void Function() function;
+  const GradeCard({super.key, required this.content, required this.function});
 
   @override
   State<GradeCard> createState() => _GradeCardState();
@@ -105,8 +143,8 @@ class _GradeCardState extends State<GradeCard> {
       child: ListTile(
         title: Text(widget.content.name),
         subtitle: Text("Etkileme orani: ${widget.content.ratio}"),
-        trailing: Container(
-          width: 50,
+        trailing: SizedBox(
+          width: 120,
           height: 50,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -123,11 +161,12 @@ class _GradeCardState extends State<GradeCard> {
 
                             setState(() {
                               gradeSave = false;
+                              widget.function();
                             });
                           },
                         )
                       : Text(
-                          widget.content.grade.toString(),
+                          "${widget.content.grade.toString()}/100",
                         )),
               Expanded(
                 child: IconButton(

@@ -100,7 +100,10 @@ class _CourseCardState extends State<CourseCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => GradeDetails(course: widget.course)))
-            .then((value) => saveCourses());
+            .then((value) {
+          saveCourses();
+          setState(() {});
+        });
       },
       child: Padding(
         padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
@@ -117,32 +120,43 @@ class _CourseCardState extends State<CourseCard> {
                           fontSize: 15,
                           fontWeight: FontWeight.w500),
                     )),
-                Text("49%",
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          color: Color.fromRGBO(48, 64, 98, 1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
-                    ))
+                widget.course.gradeAverage != 0
+                    ? (Text(widget.course.gradeAverage.toString(),
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: Color.fromRGBO(48, 64, 98, 1),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
+                        )))
+                    : Text("tum notlar girilmemis")
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10)),
-                height: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: const LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    color: Color.fromRGBO(33, 217, 233, 1),
-                    value: 0.8,
-                  ),
-                ),
-              ),
-            )
+                padding: const EdgeInsets.only(top: 15),
+                child: widget.course.gradeAverage != 0
+                    ? (Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 10,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            backgroundColor: Colors.white,
+                            color: Color.fromRGBO(33, 217, 233, 1),
+                            value: widget.course.gradeAverage / 100,
+                          ),
+                        ),
+                      ))
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: widget.course.contents
+                            .map((e) => CircularProgressIndicator(
+                                  color: Color.fromRGBO(33, 217, 233, 1),
+                                  // semanticsLabel: e.name,
+                                  value: e.grade / 100,
+                                ))
+                            .toList()))
           ],
         ),
       ),

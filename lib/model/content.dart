@@ -11,7 +11,7 @@ class Content extends Course {
     this.ratio,
   ) : super('');
 
-  double calculate(double ratio, int grade) {
+  double calculate() {
     return grade * ratio;
   }
 

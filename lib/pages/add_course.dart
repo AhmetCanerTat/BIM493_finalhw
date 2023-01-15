@@ -38,12 +38,6 @@ class _AddCourseState extends State<AddCourse> {
   Course? chosenCourse;
   String? enteredCourseName;
 
-  double secilen = 1;
-  double secilenKredi = 1;
-  String girilenDersAdi = 'Ders Adı Girilmemiş';
-  double krediDegeri = 1;
-  double notDegeri = 4;
-
   void formReset() {
     fieldText.clear();
     courseSave = false;
@@ -315,13 +309,5 @@ class _AddCourseState extends State<AddCourse> {
     );
   }
 
-  double ortalamaHesapla() {
-    double toplamNot = 0;
-    double toplamKredi = 0;
-    tumDersler.forEach((element) {
-      toplamNot = toplamNot + (element.krediDegeri * element.harfDegeri);
-      toplamKredi = toplamKredi + element.krediDegeri;
-    });
-    return toplamNot / toplamKredi;
-  }
+  
 }
