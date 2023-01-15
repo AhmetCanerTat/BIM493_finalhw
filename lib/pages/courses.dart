@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bim493_finalhw/Authentication/signin_screen.dart';
 import 'package:bim493_finalhw/main.dart';
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
@@ -81,12 +82,14 @@ class _CoursesState extends State<Courses> {
           SpeedDialChild(
             child: Icon(Icons.remove_red_eye_outlined),
             backgroundColor: Colors.purple,
-            label: 'Notları gör',
+            label: 'Dersleri gör',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));}
           ),
           SpeedDialChild(
             child: Icon(Icons.logout),
             backgroundColor: Colors.grey,
             label: 'Çıkış Yap',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));}
           ),
 
         ],

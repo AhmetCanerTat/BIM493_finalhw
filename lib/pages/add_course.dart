@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:bim493_finalhw/pages/courses.dart';
+import 'package:bim493_finalhw/pages/grade_details.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Authentication/signin_screen.dart';
 import '../constants/app_constants.dart';
 import '../helper/data_helper.dart';
 import '../model/content.dart';
@@ -113,35 +117,71 @@ class _AddCourseState extends State<AddCourse> {
                     ),
                     itemCount: allContents.length,
                   )
-                : Container(
-                    margin: const EdgeInsets.all(24),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                              courseSave
-                                  ? ('Lutfen ders iceriklerini seciniz')
-                                  : ('Lütfen ders ismi giriniz'),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(color: Sabitler.anaRenk)),
+                : Column(
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.all(24),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                  courseSave
+                                      ? ('Lutfen ders iceriklerini seciniz')
+                                      : ('Lütfen ders ismi giriniz'),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5!
+                                      .copyWith(color: Sabitler.anaRenk)),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+
+                  ],
+                ),
           ),
+          Padding(padding: EdgeInsets.all(20),
+            child: ElevatedButton(
+
+              onPressed: (() {
+                allCourses.insert(0, chosenCourse!);
+                saveCourses();
+                formReset();
+              }), //ekleme yapilacak
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Sabitler.anaRenk)),  child: Text("Dersi Kaydet"),
+            ),)
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: (() {
-          allCourses.insert(0, chosenCourse!);
-          saveCourses();
-          formReset();
-        }), //ekleme yapilacak
-        backgroundColor: Sabitler.anaRenk, label: Text("Dersi Kaydet"),
+
+      floatingActionButton: SpeedDial(
+        animationCurve: Curves.bounceInOut,
+        childMargin: EdgeInsets.symmetric(vertical: 20),
+        animatedIcon: AnimatedIcons.view_list,
+        backgroundColor: Sabitler.anaRenk,
+        children: [
+
+          SpeedDialChild(
+              child: Icon(Icons.add),
+              backgroundColor: Colors.green,
+              label: 'Ders Ekle',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddCourse()));}
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.remove_red_eye_outlined),
+            backgroundColor: Colors.purple,
+            label: 'Dersleri gör',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=>  Courses()));}
+          ),
+          SpeedDialChild(
+              child: Icon(Icons.logout),
+              backgroundColor: Colors.grey,
+              label: 'Çıkış Yap',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));}
+          ),
+
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
