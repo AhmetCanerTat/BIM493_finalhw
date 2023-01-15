@@ -27,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (c) => const HomeScreen(),
+          builder: (c) => const Courses(),
         ),
       );
     } else {

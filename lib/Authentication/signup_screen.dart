@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bim493_finalhw/pages/courses.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -73,16 +74,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               );
             }
           });
+        Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));
 
-        String fileName  = DateTime.now().microsecondsSinceEpoch.toString();
-        fStorage.Reference reference = fStorage.FirebaseStorage.instance.ref().child('users').child(fileName);
-        fStorage.UploadTask uploadTask = reference.putFile(File(imageXFile!.path));
-        fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
-        await taskSnapshot.ref.getDownloadURL().then((url) {
-          imageUrl = url;
-          authenticateSellerAndSignUp();
 
-        });
 
 
 
@@ -100,60 +94,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
 
-  void authenticateSellerAndSignUp() async
-  {
-    User? currentUser;
-
-    await firebaseUser.createUserWithEmailAndPassword(
-      email: _emailTextController.text.trim(),
-      password: _passwordTextController.text.trim(),
-    ).then((auth) {
-      currentUser = auth.user;
-    }).catchError((error){
-      Navigator.pop(context);
-      showDialog(
-          context: context,
-          builder: (c)
-          {
-            return ErrorDialog(
-              message: error.message.toString(),
-            );
-          }
-      );
-    });
-
-    if(currentUser != null)
-    {
-      saveDataToFirestore(currentUser!).then((value) {
-        Navigator.pop(context);
-        //send user to homePage
-        Route newRoute = MaterialPageRoute(builder: (c) => HomeScreen());
-        Navigator.pushReplacement(context, newRoute);
-      });
-    }
-  }
-
-  Future saveDataToFirestore(User currentUser) async {
-    FirebaseFirestore.instance.collection("users").doc(currentUser.uid).set(
-        {
-          "UID": currentUser.uid,
-          "Email": currentUser.email,
-          "Name": _userNameTextController.text.trim(),
-
-          "address": completeAddress,
-          "status": "approved",
-          "earnings": 0.0,
-
-        });
-
-    //save data locally
-    sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences!.setString("uid", currentUser.uid);
-    await sharedPreferences!.setString("email", currentUser.email.toString());
-    await sharedPreferences!.setString("name", _userNameTextController.text.trim());
 
 
-  }
+
 
 
   @override

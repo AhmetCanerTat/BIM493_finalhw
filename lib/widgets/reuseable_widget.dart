@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/app_constants.dart';
+
 Image logoImage(String imageName) {
   return Image.asset(
     imageName,
@@ -30,7 +32,7 @@ TextField reuseableTextField(String text, IconData icon, bool isPasswordType, bo
       labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Colors.blueAccent.withOpacity(0.1),
+      fillColor: Sabitler.anaRenk.withOpacity(0.3),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
@@ -65,7 +67,7 @@ Container signInSignOutButton(BuildContext context, bool isLogin,
             if (states.contains(MaterialState.pressed)) {
               return Colors.white70;
             }
-            return Colors.black;
+            return Sabitler.anaRenk;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
