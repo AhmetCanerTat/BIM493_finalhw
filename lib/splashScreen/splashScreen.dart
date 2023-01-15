@@ -21,17 +21,11 @@ class _MySplashScreenState extends State<MySplashScreen> {
   startTimer(){
 
 
-    Timer(Duration(seconds: 5), () async {
+    Timer(Duration(seconds: 3), () async {
 
-      if(firebaseUser.currentUser != null){
 
-       Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));
-
-      }
-
-      else{
         Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));
-      }
+
 
 
     });
@@ -56,7 +50,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
               const SizedBox(height: 10,),
               const Padding(
                 padding: EdgeInsets.all(18.0),
-                child: Text('Delivery by Bike Riders',
+                child: Text(' ',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,

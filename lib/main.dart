@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       darkTheme: ThemeData.dark(),
-      home: SignInScreen(),
+      home: MySplashScreen(),
     );
   }
 }

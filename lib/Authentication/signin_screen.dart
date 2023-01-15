@@ -1,16 +1,11 @@
 import 'package:bim493_finalhw/pages/courses.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 import 'package:flutter/material.dart';
 
-import '../global/global.dart';
 import '../home_screen.dart';
 import '../widgets/error_dialog.dart';
-import '../widgets/loading_dialog.dart';
+
 import '../widgets/reuseable_widget.dart';
 import 'signup_screen.dart';
 
@@ -29,7 +24,12 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_emailTextController.text.isNotEmpty &&
         _passwordTextController.text.isNotEmpty) {
       // login
-      loginNow();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (c) => const HomeScreen(),
+        ),
+      );
     } else {
       showDialog(
           context: context,
@@ -41,69 +41,6 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  loginNow() async {
-    showDialog(
-        context: context,
-        builder: (c) {
-          return const LoadingDialog(
-            message: "Checking Credentials",
-          );
-        });
-
-    User? currentUser;
-    await firebaseUser
-        .signInWithEmailAndPassword(
-      email: _emailTextController.text.trim(),
-      password: _passwordTextController.text.trim(),
-    )
-        .then((auth) {
-      currentUser = auth.user!;
-    }).catchError((error) {
-      Navigator.pop(context);
-    });
-
-    if (currentUser != null) {
-      readDataAndSetDataLocally(currentUser!).then((value) {
-        Navigator.pop(context);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const HomeScreen()));
-      });
-    }
-  }
-
-  Future readDataAndSetDataLocally(User currentUser) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUser.uid)
-        .get()
-        .then((snapshot) async {
-          if(snapshot.exists)
-            {
-              await sharedPreferences!
-                  .setString("uid", currentUser.uid);
-              await sharedPreferences!
-                  .setString("email", snapshot.data()!["Email"]);
-              await sharedPreferences!
-                  .setString("name", snapshot.data()!["Name"]);
-              Navigator.push(context, MaterialPageRoute(builder: (c) => Courses()),
-              );
-            }
-          else{
-            firebaseUser.signOut();
-
-            Navigator.push(context, MaterialPageRoute(builder: (c) => SignInScreen( )));
-            showDialog(
-                context: context,
-                builder: (c) {
-                  return const ErrorDialog(
-                    message: "No record exists. ",
-                  );
-                });
-          }
-
-    }
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
               const Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Text(
-                  'ECO-COURIER RIDER',
+                  ' ',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,
@@ -142,6 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   _passwordTextController),
               SizedBox(height: 40),
               signInSignOutButton(context, true, () {
+
                 formValidation();
               }),
               SizedBox(height: 10),
