@@ -42,11 +42,7 @@ class DataHelper {
     }
   }
 
-  static List<int> _tumKrediler() {
-    return List.generate(10, (index) => index + 1).toList();
-  }
-
-  static List<DropdownMenuItem<double>> tumDersHarfleri() {
+  static List<DropdownMenuItem<double>> allCourseLetters() {
     return _createCourseLetters()
         .map((e) => DropdownMenuItem<double>(
               child: Text(e),
@@ -73,7 +69,7 @@ class DataHelper {
         .toList();
   }
 
-  static List<DropdownMenuItem<double>> tumKrediler() {
+  static List<DropdownMenuItem<double>> allCredits() {
     return List.generate(10, (index) => (index + 1))
         .toList()
         .map((e) => DropdownMenuItem(

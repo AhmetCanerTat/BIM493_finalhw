@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/app_constants.dart';
+import '../helper/data_helper.dart';
 import '../model/content.dart';
-import '../model/course.dart';
 
 class GradeDetails extends StatefulWidget {
   final Course course;
@@ -20,6 +20,7 @@ class GradeDetails extends StatefulWidget {
 class _GradeDetailsState extends State<GradeDetails> {
   late bool AllGradesEntered = false;
 
+  double credit = 1;
   double gradeAverage() {
     double gradeAverage = 0;
     for (Content content in widget.course.contents) {
@@ -79,11 +80,13 @@ class _GradeDetailsState extends State<GradeDetails> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Spacer(),
+                    const Spacer(
+                      flex: 2,
+                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 30),
                       child: AllGradesEntered
-                          ? (Text((gradeAverage().toString()),
+                          ? (Text((gradeAverage().toStringAsFixed(2)),
                               style: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                     color: Color.fromRGBO(48, 64, 98, 1),
@@ -103,7 +106,70 @@ class _GradeDetailsState extends State<GradeDetails> {
                                 fontSize: 30,
                                 fontWeight: FontWeight.w700)),
                       ),
-                    ))
+                    )),
+                    Row(
+                      children: [
+                        Spacer(),
+                        Column(
+                          children: [
+                            Text('Harf Notu'),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Container(
+                                alignment: Alignment.bottomRight,
+                                decoration: BoxDecoration(
+                                  color: Sabitler.anaRenk.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: DropdownButton<double>(
+                                  iconEnabledColor: Sabitler.anaRenk,
+                                  elevation: 16,
+                                  items: DataHelper.allCourseLetters(),
+                                  underline: Container(),
+                                  onChanged: (letter) {
+                                    setState(() {
+                                      widget.course.letter = letter!;
+                                    });
+                                  },
+                                  value: widget.course.letter,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text('Kredi'),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Sabitler.anaRenk.withOpacity(0.4),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                child: DropdownButton<double>(
+                                  iconEnabledColor: Sabitler.anaRenk,
+                                  elevation: 16,
+                                  items: DataHelper.allCredits(),
+                                  underline: Container(),
+                                  onChanged: (credit) {
+                                    setState(() {
+                                      widget.course.credit = credit!;
+                                    });
+                                  },
+                                  value: widget.course.credit,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )
                   ],
                 )),
           ),

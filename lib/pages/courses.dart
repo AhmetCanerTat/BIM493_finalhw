@@ -37,6 +37,17 @@ class _CoursesState extends State<Courses> {
     }
   }
 
+  double calculateAverage() {
+    double gradeSum = 0;
+    double creditSum = 0;
+    allCourses.forEach((element) {
+      gradeSum = gradeSum + (element.credit * element.letter);
+      creditSum = creditSum + element.credit;
+    });
+    setState(() {});
+    return (gradeSum / creditSum);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,27 +58,96 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: allCourses.isNotEmpty
-          ? ListView.builder(
-              itemCount: allCourses.length,
-              itemBuilder: ((context, index) => CourseCard(
-                  course: allCourses[index], allCourses: allCourses)))
-          : Container(
-              margin: const EdgeInsets.all(24),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(('Lutfen ders ekleyiniz'),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Sabitler.anaRenk)),
-                  ),
-                ),
-              ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          title: Text("DERSLER",
+              style: GoogleFonts.raleway(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400),
+              ))),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+              child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[
+                    Color.fromRGBO(33, 217, 233, 1),
+                    Colors.white
+                  ]),
             ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Spacer(
+                  flex: 2,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(('Genel Not'),
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                        Text(
+                            'Ortalamasi : ${calculateAverage().toStringAsFixed(2)}',
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700),
+                            ))
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
+          Expanded(
+            flex: 3,
+            child: allCourses.isNotEmpty
+                ? ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: allCourses.length,
+                    itemBuilder: ((context, index) => CourseCard(
+                          course: allCourses[index],
+                          allCourses: allCourses,
+                          function: calculateAverage,
+                        )))
+                : Container(
+                    margin: const EdgeInsets.all(24),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(('Lutfen ders ekleyiniz'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(color: Sabitler.anaRenk)),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -75,10 +155,12 @@ class _CoursesState extends State<Courses> {
 class CourseCard extends StatefulWidget {
   final Course course;
   final List<Course> allCourses;
+  final void Function() function;
   const CourseCard({
     Key? key,
     required this.course,
     required this.allCourses,
+    required this.function,
   }) : super(key: key);
 
   @override
@@ -102,6 +184,7 @@ class _CourseCardState extends State<CourseCard> {
                     builder: (context) => GradeDetails(course: widget.course)))
             .then((value) {
           saveCourses();
+          widget.function();
           setState(() {});
         });
       },
@@ -148,15 +231,31 @@ class _CourseCardState extends State<CourseCard> {
                           ),
                         ),
                       ))
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: widget.course.contents
-                            .map((e) => CircularProgressIndicator(
-                                  color: Color.fromRGBO(33, 217, 233, 1),
-                                  // semanticsLabel: e.name,
-                                  value: e.grade / 100,
-                                ))
-                            .toList()))
+                    : null),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: widget.course.contents
+                      .map((e) => Column(
+                            children: [
+                              Stack(alignment: Alignment.center, children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(18),
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromRGBO(33, 217, 233, 1),
+                                    value: e.grade / 100,
+                                  ),
+                                ),
+                                Center(child: Text(e.grade.round().toString()))
+                              ]),
+                              Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Text(e.name))
+                            ],
+                          ))
+                      .toList()),
+            )
           ],
         ),
       ),
