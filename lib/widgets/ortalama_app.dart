@@ -28,6 +28,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        toolbarHeight: 50,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Center(

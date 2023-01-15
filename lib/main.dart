@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: AddCourse(),
+      home: Courses(),
     );
   }
 }
