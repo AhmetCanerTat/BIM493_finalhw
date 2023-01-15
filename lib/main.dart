@@ -1,3 +1,4 @@
+import 'package:bim493_finalhw/Authentication/signin_screen.dart';
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/courses.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: Courses(),
+      darkTheme: ThemeData.dark(),
+      home: SignInScreen(),
     );
   }
 }

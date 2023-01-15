@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bim493_finalhw/pages/courses.dart';
 import 'package:flutter/material.dart';
 
 import '../Authentication/signin_screen.dart';
@@ -24,7 +25,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
       if(firebaseUser.currentUser != null){
 
-       Navigator.push(context, MaterialPageRoute(builder: (c)=> const HomeScreen()));
+       Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));
 
       }
 

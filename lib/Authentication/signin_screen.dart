@@ -1,3 +1,4 @@
+import 'package:bim493_finalhw/pages/courses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -84,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   .setString("email", snapshot.data()!["Email"]);
               await sharedPreferences!
                   .setString("name", snapshot.data()!["Name"]);
-              Navigator.push(context, MaterialPageRoute(builder: (c) => HomeScreen()),
+              Navigator.push(context, MaterialPageRoute(builder: (c) => Courses()),
               );
             }
           else{
