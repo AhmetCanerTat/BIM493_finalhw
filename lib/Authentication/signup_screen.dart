@@ -1,18 +1,13 @@
 import 'dart:io';
 import 'package:bim493_finalhw/pages/courses.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as fStorage;
-import 'package:path/path.dart' as Path;
 
-import '../global/global.dart';
-import '../home_screen.dart';
+
 import '../widgets/error_dialog.dart';
 import '../widgets/loading_dialog.dart';
 import '../widgets/reuseable_widget.dart';

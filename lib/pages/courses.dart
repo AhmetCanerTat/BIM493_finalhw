@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:bim493_finalhw/main.dart';
+import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,6 +65,32 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SpeedDial(
+        animationCurve: Curves.bounceInOut,
+        childMargin: EdgeInsets.symmetric(vertical: 20),
+        animatedIcon: AnimatedIcons.view_list,
+        backgroundColor: Sabitler.anaRenk,
+        children: [
+
+          SpeedDialChild(
+            child: Icon(Icons.add),
+            backgroundColor: Colors.green,
+            label: 'Ders Ekle',
+            onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddCourse()));}
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.remove_red_eye_outlined),
+            backgroundColor: Colors.purple,
+            label: 'Notları gör',
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.logout),
+            backgroundColor: Colors.grey,
+            label: 'Çıkış Yap',
+          ),
+
+        ],
+      ),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
           backgroundColor: Colors.transparent,
