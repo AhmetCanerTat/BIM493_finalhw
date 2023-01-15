@@ -20,12 +20,6 @@ class AddCourse extends StatefulWidget {
 class _AddCourseState extends State<AddCourse> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  void saveCourses() async {
-    final SharedPreferences prefs = await _prefs;
-    List courses = allCourses.map((e) => e.toJson()).toList();
-    prefs.setString("courses", jsonEncode(courses));
-  }
-
   final fieldText = TextEditingController();
   List<Course> allCourses = [];
   List<Content> allContents = [];
@@ -38,11 +32,38 @@ class _AddCourseState extends State<AddCourse> {
   Course? chosenCourse;
   String? enteredCourseName;
 
+  void saveCourses() async {
+    final SharedPreferences prefs = await _prefs;
+    List courses = allCourses.map((e) => e.toJson()).toList();
+    prefs.setString("courses", jsonEncode(courses));
+  }
+
+  void getCourses() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? coursesJson = prefs.getString('courses');
+    if (coursesJson != null) {
+      List coursesList = jsonDecode(coursesJson);
+
+      for (var course in coursesList) {
+        setState(() {
+          allCourses.add(Course.fromJson(course));
+        });
+      }
+    }
+  }
+
   void formReset() {
     fieldText.clear();
     courseSave = false;
     allContents = [];
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCourses();
   }
 
   @override
@@ -308,6 +329,4 @@ class _AddCourseState extends State<AddCourse> {
       ),
     );
   }
-
-  
 }

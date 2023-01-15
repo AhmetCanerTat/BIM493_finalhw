@@ -48,6 +48,11 @@ class _CoursesState extends State<Courses> {
     return (gradeSum / creditSum);
   }
 
+  void removeCourse(Course course) {
+    allCourses.remove(course);
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -127,7 +132,8 @@ class _CoursesState extends State<Courses> {
                     itemBuilder: ((context, index) => CourseCard(
                           course: allCourses[index],
                           allCourses: allCourses,
-                          function: calculateAverage,
+                          calculateAverage: calculateAverage,
+                          removeCourse: removeCourse,
                         )))
                 : Container(
                     margin: const EdgeInsets.all(24),
@@ -155,12 +161,14 @@ class _CoursesState extends State<Courses> {
 class CourseCard extends StatefulWidget {
   final Course course;
   final List<Course> allCourses;
-  final void Function() function;
+  final void Function() calculateAverage;
+  final void Function(Course course) removeCourse;
   const CourseCard({
     Key? key,
     required this.course,
     required this.allCourses,
-    required this.function,
+    required this.calculateAverage,
+    required this.removeCourse,
   }) : super(key: key);
 
   @override
@@ -177,6 +185,13 @@ class _CourseCardState extends State<CourseCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onLongPress: () {
+        AlertDialog(
+          title: Text('silmek istediginize emin misiniz'),
+        );
+        widget.removeCourse(widget.course);
+        saveCourses();
+      },
       onTap: () {
         Navigator.push(
                 context,
@@ -184,7 +199,7 @@ class _CourseCardState extends State<CourseCard> {
                     builder: (context) => GradeDetails(course: widget.course)))
             .then((value) {
           saveCourses();
-          widget.function();
+          widget.calculateAverage();
           setState(() {});
         });
       },
