@@ -37,6 +37,22 @@ class _CoursesState extends State<Courses> {
     }
   }
 
+  double calculateAverage() {
+    double gradeSum = 0;
+    double creditSum = 0;
+    allCourses.forEach((element) {
+      gradeSum = gradeSum + (element.credit * element.letter);
+      creditSum = creditSum + element.credit;
+    });
+    setState(() {});
+    return (gradeSum / creditSum);
+  }
+
+  void removeCourse(Course course) {
+    allCourses.remove(course);
+    setState(() {});
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,27 +63,97 @@ class _CoursesState extends State<Courses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: allCourses.isNotEmpty
-          ? ListView.builder(
-              itemCount: allCourses.length,
-              itemBuilder: ((context, index) => CourseCard(
-                  course: allCourses[index], allCourses: allCourses)))
-          : Container(
-              margin: const EdgeInsets.all(24),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(('Lutfen ders ekleyiniz'),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Sabitler.anaRenk)),
-                  ),
-                ),
-              ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          title: Text("DERSLER",
+              style: GoogleFonts.raleway(
+                textStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400),
+              ))),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+              child: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[
+                    Color.fromRGBO(33, 217, 233, 1),
+                    Colors.white
+                  ]),
             ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Spacer(
+                  flex: 2,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(('Genel Not'),
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                        Text(
+                            'Ortalamasi : ${calculateAverage().toStringAsFixed(2)}',
+                            style: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700),
+                            ))
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )),
+          Expanded(
+            flex: 3,
+            child: allCourses.isNotEmpty
+                ? ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: allCourses.length,
+                    itemBuilder: ((context, index) => CourseCard(
+                          course: allCourses[index],
+                          allCourses: allCourses,
+                          calculateAverage: calculateAverage,
+                          removeCourse: removeCourse,
+                        )))
+                : Container(
+                    margin: const EdgeInsets.all(24),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: Text(('Lutfen ders ekleyiniz'),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(color: Sabitler.anaRenk)),
+                        ),
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -75,10 +161,14 @@ class _CoursesState extends State<Courses> {
 class CourseCard extends StatefulWidget {
   final Course course;
   final List<Course> allCourses;
+  final void Function() calculateAverage;
+  final void Function(Course course) removeCourse;
   const CourseCard({
     Key? key,
     required this.course,
     required this.allCourses,
+    required this.calculateAverage,
+    required this.removeCourse,
   }) : super(key: key);
 
   @override
@@ -95,12 +185,23 @@ class _CourseCardState extends State<CourseCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onLongPress: () {
+        AlertDialog(
+          title: Text('silmek istediginize emin misiniz'),
+        );
+        widget.removeCourse(widget.course);
+        saveCourses();
+      },
       onTap: () {
         Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => GradeDetails(course: widget.course)))
-            .then((value) => saveCourses());
+            .then((value) {
+          saveCourses();
+          widget.calculateAverage();
+          setState(() {});
+        });
       },
       child: Padding(
         padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
@@ -117,31 +218,58 @@ class _CourseCardState extends State<CourseCard> {
                           fontSize: 15,
                           fontWeight: FontWeight.w500),
                     )),
-                Text("49%",
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          color: Color.fromRGBO(48, 64, 98, 1),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
-                    ))
+                widget.course.gradeAverage != 0
+                    ? (Text(widget.course.gradeAverage.toString(),
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                              color: Color.fromRGBO(48, 64, 98, 1),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700),
+                        )))
+                    : Text("tum notlar girilmemis")
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(10)),
-                height: 10,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: const LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    color: Color.fromRGBO(33, 217, 233, 1),
-                    value: 0.8,
-                  ),
-                ),
-              ),
+                padding: const EdgeInsets.only(top: 15),
+                child: widget.course.gradeAverage != 0
+                    ? (Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(10)),
+                        height: 10,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            backgroundColor: Colors.white,
+                            color: Color.fromRGBO(33, 217, 233, 1),
+                            value: widget.course.gradeAverage / 100,
+                          ),
+                        ),
+                      ))
+                    : null),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: widget.course.contents
+                      .map((e) => Column(
+                            children: [
+                              Stack(alignment: Alignment.center, children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(18),
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromRGBO(33, 217, 233, 1),
+                                    value: e.grade / 100,
+                                  ),
+                                ),
+                                Center(child: Text(e.grade.round().toString()))
+                              ]),
+                              Padding(
+                                  padding: EdgeInsets.only(top: 5),
+                                  child: Text(e.name))
+                            ],
+                          ))
+                      .toList()),
             )
           ],
         ),

@@ -201,7 +201,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
       child: DropdownButton<double>(
         iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
-        items: DataHelper.tumDersHarfleri(),
+        items: DataHelper.allCourseLetters(),
         underline: Container(),
         onChanged: (dd) {
           setState(() {
@@ -225,7 +225,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
       child: DropdownButton<double>(
         iconEnabledColor: Sabitler.anaRenk,
         elevation: 16,
-        items: DataHelper.tumKrediler(),
+        items: DataHelper.allCredits(),
         underline: Container(),
         onChanged: (dd) {
           setState(() {
