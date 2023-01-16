@@ -24,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_emailTextController.text.isNotEmpty &&
         _passwordTextController.text.isNotEmpty) {
       // login
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (c) => const Courses(),

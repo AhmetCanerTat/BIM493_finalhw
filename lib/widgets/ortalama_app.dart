@@ -177,7 +177,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
           return null;
       },
       decoration: InputDecoration(
-          hintText: 'Matematik',
+          hintText: 'Ders Adı',
           border: OutlineInputBorder(
             borderRadius: Sabitler.borderRadius,
             borderSide: BorderSide(

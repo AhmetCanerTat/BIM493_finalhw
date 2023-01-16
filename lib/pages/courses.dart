@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:bim493_finalhw/Authentication/signin_screen.dart';
 import 'package:bim493_finalhw/main.dart';
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
+import 'package:bim493_finalhw/widgets/error_dialog.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -81,12 +83,14 @@ class _CoursesState extends State<Courses> {
           SpeedDialChild(
             child: Icon(Icons.remove_red_eye_outlined),
             backgroundColor: Colors.purple,
-            label: 'Notları gör',
+            label: 'Dersleri gör',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));}
           ),
           SpeedDialChild(
             child: Icon(Icons.logout),
             backgroundColor: Colors.grey,
             label: 'Çıkış Yap',
+              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));}
           ),
 
         ],
@@ -214,8 +218,8 @@ class _CourseCardState extends State<CourseCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        AlertDialog(
-          title: Text('silmek istediginize emin misiniz'),
+        ErrorDialog(
+          message: 'silmek istediginize emin misiniz',
         );
         widget.removeCourse(widget.course);
         saveCourses();
