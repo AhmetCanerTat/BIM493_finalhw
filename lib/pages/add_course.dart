@@ -77,11 +77,12 @@ class _AddCourseState extends State<AddCourse> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title:  Text(
+        title: Center(
+          child: Text(
             'Ders Ekle',
             style: Sabitler.textStyle(24, FontWeight.w900, Sabitler.anaRenk),
           ),
-
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,6 +96,7 @@ class _AddCourseState extends State<AddCourse> {
                       key: UniqueKey(),
                       direction: DismissDirection.startToEnd,
                       onDismissed: (a) {
+                        chosenCourse?.removeContent(allContents[index]);
                         setState(() {
                           allContents.removeAt(index);
                         });
@@ -117,8 +119,8 @@ class _AddCourseState extends State<AddCourse> {
                     itemCount: allContents.length,
                   )
                 : Column(
-                  children: [
-                    Container(
+                    children: [
+                      Container(
                         margin: const EdgeInsets.all(24),
                         child: Align(
                           alignment: Alignment.topCenter,
@@ -137,51 +139,57 @@ class _AddCourseState extends State<AddCourse> {
                           ),
                         ),
                       ),
-
-                  ],
-                ),
-          ),Padding(padding: EdgeInsets.only(bottom: 20),
+                    ],
+                  ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
             child: Center(
               child: ElevatedButton(
-
                 onPressed: (() {
                   allCourses.insert(0, chosenCourse!);
                   saveCourses();
                   formReset();
                 }), //ekleme yapilacak
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Sabitler.anaRenk)),  child: Text("Dersi Kaydet"),
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Sabitler.anaRenk)),
+                child: Text("Dersi Kaydet"),
               ),
-            ),)
-
+            ),
+          )
         ],
       ),
-
       floatingActionButton: SpeedDial(
         animationCurve: Curves.bounceInOut,
         childMargin: EdgeInsets.symmetric(vertical: 20),
         animatedIcon: AnimatedIcons.view_list,
         backgroundColor: Sabitler.anaRenk,
         children: [
-
           SpeedDialChild(
               child: Icon(Icons.add),
               backgroundColor: Colors.green,
               label: 'Ders Ekle',
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddCourse()));}
-          ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const AddCourse()));
+              }),
           SpeedDialChild(
-            child: Icon(Icons.remove_red_eye_outlined),
-            backgroundColor: Colors.purple,
-            label: 'Dersleri gör',
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=>  Courses()));}
-          ),
+              child: Icon(Icons.remove_red_eye_outlined),
+              backgroundColor: Colors.purple,
+              label: 'Dersleri gör',
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (c) => Courses()));
+              }),
           SpeedDialChild(
               child: Icon(Icons.logout),
               backgroundColor: Colors.grey,
               label: 'Çıkış Yap',
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));}
-          ),
-
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const SignInScreen()));
+              }),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

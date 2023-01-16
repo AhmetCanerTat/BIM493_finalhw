@@ -12,6 +12,10 @@ class Course {
     contents.add(content);
   }
 
+  removeContent(Content content) {
+    contents.remove(content);
+  }
+
   takeContentList(contents) {}
 
   Map toJson() {

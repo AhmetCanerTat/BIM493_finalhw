@@ -1,6 +1,5 @@
 import 'package:bim493_finalhw/pages/courses.dart';
 
-
 import 'package:flutter/material.dart';
 
 import '../home_screen.dart';
@@ -24,12 +23,11 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_emailTextController.text.isNotEmpty &&
         _passwordTextController.text.isNotEmpty) {
       // login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (c) => const Courses(),
-        ),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (BuildContext c) => const Courses(),
+          ),
+          (Route<dynamic> route) => false);
     } else {
       showDialog(
           context: context,
@@ -40,7 +38,6 @@ class _SignInScreenState extends State<SignInScreen> {
           });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +76,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   _passwordTextController),
               SizedBox(height: 40),
               signInSignOutButton(context, true, () {
-
                 formValidation();
               }),
               SizedBox(height: 10),

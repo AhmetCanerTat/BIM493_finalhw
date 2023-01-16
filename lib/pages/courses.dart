@@ -73,26 +73,30 @@ class _CoursesState extends State<Courses> {
         animatedIcon: AnimatedIcons.view_list,
         backgroundColor: Sabitler.anaRenk,
         children: [
-
           SpeedDialChild(
-            child: Icon(Icons.add),
-            backgroundColor: Colors.green,
-            label: 'Ders Ekle',
-            onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const AddCourse()));}
-          ),
+              child: Icon(Icons.add),
+              backgroundColor: Colors.green,
+              label: 'Ders Ekle',
+              onTap: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (c) => const AddCourse()));
+              }),
           SpeedDialChild(
-            child: Icon(Icons.remove_red_eye_outlined),
-            backgroundColor: Colors.purple,
-            label: 'Dersleri gör',
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));}
-          ),
+              child: Icon(Icons.remove_red_eye_outlined),
+              backgroundColor: Colors.purple,
+              label: 'Dersleri gör',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const Courses()));
+              }),
           SpeedDialChild(
-            child: Icon(Icons.logout),
-            backgroundColor: Colors.grey,
-            label: 'Çıkış Yap',
-              onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignInScreen()));}
-          ),
-
+              child: Icon(Icons.logout),
+              backgroundColor: Colors.grey,
+              label: 'Çıkış Yap',
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (c) => const SignInScreen()));
+              }),
         ],
       ),
       extendBodyBehindAppBar: true,
@@ -236,74 +240,97 @@ class _CourseCardState extends State<CourseCard> {
         });
       },
       child: Padding(
-        padding: EdgeInsets.only(left: 40, right: 40, top: 20, bottom: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: EdgeInsets.only(
+          left: 10,
+          right: 10,
+          top: 10,
+        ),
+        child: Container(
+          margin: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Sabitler.anaRenk.withOpacity(0.6),
+                blurRadius: 5,
+                spreadRadius: 2,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.course.name,
-                    style: GoogleFonts.montserrat(
-                      textStyle: const TextStyle(
-                          color: Color.fromRGBO(48, 64, 98, 1),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    )),
-                widget.course.gradeAverage != 0
-                    ? (Text(widget.course.gradeAverage.toString(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.course.name,
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                               color: Color.fromRGBO(48, 64, 98, 1),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
-                        )))
-                    : Text("tum notlar girilmemis")
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),
+                        )),
+                    widget.course.gradeAverage != 0
+                        ? (Text(widget.course.gradeAverage.toString(),
+                            style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            )))
+                        : Text("tum notlar girilmemis")
+                  ],
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: widget.course.gradeAverage != 0
+                        ? (Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(10)),
+                            height: 10,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: LinearProgressIndicator(
+                                backgroundColor: Colors.white,
+                                color: Color.fromRGBO(33, 217, 233, 1),
+                                value: widget.course.gradeAverage / 100,
+                              ),
+                            ),
+                          ))
+                        : null),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: widget.course.contents
+                          .map((e) => Column(
+                                children: [
+                                  Stack(alignment: Alignment.center, children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(18),
+                                      child: CircularProgressIndicator(
+                                        color: Color.fromRGBO(33, 217, 233, 1),
+                                        value: e.grade / 100,
+                                      ),
+                                    ),
+                                    Center(
+                                        child: Text(e.grade.round().toString()))
+                                  ]),
+                                  Padding(
+                                      padding: EdgeInsets.only(top: 5),
+                                      child: Text(e.name))
+                                ],
+                              ))
+                          .toList()),
+                )
               ],
             ),
-            Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: widget.course.gradeAverage != 0
-                    ? (Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(10)),
-                        height: 10,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: LinearProgressIndicator(
-                            backgroundColor: Colors.white,
-                            color: Color.fromRGBO(33, 217, 233, 1),
-                            value: widget.course.gradeAverage / 100,
-                          ),
-                        ),
-                      ))
-                    : null),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: widget.course.contents
-                      .map((e) => Column(
-                            children: [
-                              Stack(alignment: Alignment.center, children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(18),
-                                  child: CircularProgressIndicator(
-                                    color: Color.fromRGBO(33, 217, 233, 1),
-                                    value: e.grade / 100,
-                                  ),
-                                ),
-                                Center(child: Text(e.grade.round().toString()))
-                              ]),
-                              Padding(
-                                  padding: EdgeInsets.only(top: 5),
-                                  child: Text(e.name))
-                            ],
-                          ))
-                      .toList()),
-            )
-          ],
+          ),
         ),
       ),
     );
