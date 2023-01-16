@@ -77,12 +77,11 @@ class _AddCourseState extends State<AddCourse> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Center(
-          child: Text(
+        title:  Text(
             'Ders Ekle',
             style: Sabitler.textStyle(24, FontWeight.w900, Sabitler.anaRenk),
           ),
-        ),
+
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,17 +140,19 @@ class _AddCourseState extends State<AddCourse> {
 
                   ],
                 ),
-          ),
-          Padding(padding: EdgeInsets.all(20),
-            child: ElevatedButton(
+          ),Padding(padding: EdgeInsets.only(bottom: 20),
+            child: Center(
+              child: ElevatedButton(
 
-              onPressed: (() {
-                allCourses.insert(0, chosenCourse!);
-                saveCourses();
-                formReset();
-              }), //ekleme yapilacak
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Sabitler.anaRenk)),  child: Text("Dersi Kaydet"),
+                onPressed: (() {
+                  allCourses.insert(0, chosenCourse!);
+                  saveCourses();
+                  formReset();
+                }), //ekleme yapilacak
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Sabitler.anaRenk)),  child: Text("Dersi Kaydet"),
+              ),
             ),)
+
         ],
       ),
 

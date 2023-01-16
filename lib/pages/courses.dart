@@ -4,6 +4,7 @@ import 'package:bim493_finalhw/Authentication/signin_screen.dart';
 import 'package:bim493_finalhw/main.dart';
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
+import 'package:bim493_finalhw/widgets/error_dialog.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -217,8 +218,8 @@ class _CourseCardState extends State<CourseCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        AlertDialog(
-          title: Text('silmek istediginize emin misiniz'),
+        ErrorDialog(
+          message: 'silmek istediginize emin misiniz',
         );
         widget.removeCourse(widget.course);
         saveCourses();

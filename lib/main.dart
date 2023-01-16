@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Sabitler.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      darkTheme: ThemeData.dark(),
-      //themeMode: ThemeMode.dark,
+      //darkTheme: ThemeData.dark(),
+      //themeMode: ThemeMode.,
       home: MySplashScreen(),
     );
   }
