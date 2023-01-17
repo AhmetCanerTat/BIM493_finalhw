@@ -11,8 +11,8 @@ Image logoImage(String imageName) {
   );
 }
 
-TextField reuseableTextField(String text, IconData icon, bool isPasswordType, bool isEnabled,
-    TextEditingController controller) {
+TextField reuseableTextField(String text, IconData icon, bool isPasswordType,
+    bool isEnabled, TextEditingController controller) {
   // bool _obsecureText = isPasswordType;
   return TextField(
     controller: controller,
@@ -43,13 +43,10 @@ TextField reuseableTextField(String text, IconData icon, bool isPasswordType, bo
   );
 }
 
-Container signInSignOutButton(BuildContext context, bool isLogin,
-    Function onTap) {
+Container signInSignOutButton(
+    BuildContext context, bool isLogin, Function onTap) {
   return Container(
-    width: MediaQuery
-        .of(context)
-        .size
-        .width,
+    width: MediaQuery.of(context).size.width,
     height: 55,
     margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
@@ -76,27 +73,24 @@ Container signInSignOutButton(BuildContext context, bool isLogin,
 }
 
 Container button(BuildContext context, Function onTab, Widget icon) {
-
   return Container(
-    width: MediaQuery
-        .of(context)
-        .size
-        .width,
+    width: MediaQuery.of(context).size.width,
     height: 55,
-
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
     child: ElevatedButton(
-    onPressed: () { onTab();},
-    child: icon,
-    style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
-            return Colors.white70;
-          }
-          return Colors.black;
-        }),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
-  ),
+      onPressed: () {
+        onTab();
+      },
+      child: icon,
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.white70;
+            }
+            return Constants.anaRenk;
+          }),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
+    ),
   );
 }

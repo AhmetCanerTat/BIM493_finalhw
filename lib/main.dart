@@ -1,13 +1,10 @@
-
 import 'package:bim493_finalhw/splashScreen/splashScreen.dart';
 
 import 'package:flutter/material.dart';
-import 'pages/grade_details.dart';
 
 import 'constants/app_constants.dart';
 
 void main() async {
-
   runApp(MyApp());
 }
 

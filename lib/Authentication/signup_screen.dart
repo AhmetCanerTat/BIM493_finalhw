@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-
 import '../widgets/error_dialog.dart';
 import '../widgets/loading_dialog.dart';
 import '../widgets/reuseable_widget.dart';
@@ -20,10 +19,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
-
-
-
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
@@ -32,10 +27,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
 
-
-
   String imageUrl = "";
-  String completeAddress ="";
+  String completeAddress = "";
 
   Future<void> _getImage() async {
     imageXFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -44,8 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       imageXFile;
     });
   }
-
-
 
   Future<void> formValidation() async {
     if (imageXFile == null) {
@@ -61,20 +52,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _emailTextController.text.isNotEmpty &&
           _userNameTextController.text.isNotEmpty) {
         showDialog(
-          context: context,
-          builder: (c){
-            {
-              return const LoadingDialog(
-                message: "Registering Account",
-              );
-            }
-          });
-        Navigator.push(context, MaterialPageRoute(builder: (c)=> const Courses()));
-
-
-
-
-
+            context: context,
+            builder: (c) {
+              {
+                return const LoadingDialog(
+                  message: "Registering Account",
+                );
+              }
+            });
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (BuildContext c) => const Courses(),
+            ),
+            (Route<dynamic> route) => false);
       } else {
         showDialog(
             context: context,
@@ -87,32 +77,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-
-
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: MediaQuery
-            .of(context)
-            .size
-            .height,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         child: Padding(
           padding: EdgeInsets.fromLTRB(
-              20, MediaQuery
-              .of(context)
-              .size
-              .height * 0.12, 20, 0),
+              20, MediaQuery.of(context).size.height * 0.12, 20, 0),
           child: Column(
             children: <Widget>[
               InkWell(
@@ -120,23 +94,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _getImage();
                 },
                 child: CircleAvatar(
-                  radius: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.20,
+                  radius: MediaQuery.of(context).size.width * 0.20,
                   backgroundColor: Colors.black12,
                   backgroundImage: imageXFile == null
                       ? null
                       : FileImage(File(imageXFile!.path)),
                   child: imageXFile == null
                       ? Icon(
-                    Icons.add_photo_alternate,
-                    size: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.20,
-                    color: Colors.grey,
-                  )
+                          Icons.add_photo_alternate,
+                          size: MediaQuery.of(context).size.width * 0.20,
+                          color: Colors.grey,
+                        )
                       : null,
                 ),
               ),
@@ -149,12 +117,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               SizedBox(height: 20),
               reuseableTextField(
                   'Password', Icons.key, true, true, _passwordTextController),
-
               SizedBox(height: 40),
               signInSignOutButton(context, false, () {
                 formValidation();
-                
-
 
                 // FirebaseAuth.instance
                 //     .createUserWithEmailAndPassword(
@@ -176,9 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 //     content: Text('Error ${error.toString()}'),
                 //   ));
                 // }
-              //  );
-
-
+                //  );
               }),
             ],
           ),

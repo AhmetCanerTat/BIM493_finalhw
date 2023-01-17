@@ -149,8 +149,7 @@ class _CoursesState extends State<Courses> {
                                   fontWeight: FontWeight.w700),
                             )),
                         Text(
-                            'Ortalaması : ${calculateAverage() == 0 ?
-                            (calculateAverage().toStringAsFixed(2)):0}',
+                            'Ortalaması : ${calculateAverage() == 0 ? 0 : (calculateAverage().toStringAsFixed(2))}',
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                   color: Color.fromRGBO(48, 64, 98, 1),
@@ -199,57 +198,68 @@ class _CoursesState extends State<Courses> {
   }
 }
 
-
-
-class PlatformAlert{
+class PlatformAlert {
   final String title;
   final String message;
- 
 
   PlatformAlert(this.title, this.message);
-  
-void show(BuildContext context){
-  final platform = Theme.of(context).platform;
 
-  if(platform == TargetPlatform.iOS){
-    _buildCupertinoAlert(context);
-  }else{
-    _buildMaterialAlert(context);
+  void show(BuildContext context) {
+    final platform = Theme.of(context).platform;
+
+    if (platform == TargetPlatform.iOS) {
+      _buildCupertinoAlert(context);
+    } else {
+      _buildMaterialAlert(context);
+    }
   }
-
-
-
-
-
-}
 
   void _buildMaterialAlert(BuildContext context) {
-    showDialog(context: context, builder: (context){
-      return AlertDialog(title: Text(title),content: Text(message),
-      actions: [TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Evet')),TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Hayır'))],);
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Evet')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Hayır'))
+            ],
+          );
+        });
   }
-  
+
   void _buildCupertinoAlert(BuildContext context) {
-    showDialog(context: context, builder: (context){
-      return CupertinoAlertDialog(title: Text(title),content: Text(message),
-      actions: [TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Evet')),TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Hayır'))],);
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Evet')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Hayır'))
+            ],
+          );
+        });
   }
-
-
 }
-
-
-
 
 class CourseCard extends StatefulWidget {
   final Course course;
@@ -268,7 +278,6 @@ class CourseCard extends StatefulWidget {
   State<CourseCard> createState() => _CourseCardState();
 }
 
-
 class _CourseCardState extends State<CourseCard> {
   Future<void> saveCourses() async {
     final prefs = await SharedPreferences.getInstance();
@@ -276,53 +285,71 @@ class _CourseCardState extends State<CourseCard> {
     prefs.setString("courses", jsonEncode(courses));
   }
 
-void show(BuildContext context){
-  final platform = Theme.of(context).platform;
+  void show(BuildContext context) {
+    final platform = Theme.of(context).platform;
 
-  if(platform == TargetPlatform.iOS){
-    _buildCupertinoAlert(context);
-  }else{
-    _buildMaterialAlert(context);
+    if (platform == TargetPlatform.iOS) {
+      _buildCupertinoAlert(context);
+    } else {
+      _buildMaterialAlert(context);
+    }
   }
-}
 
   void _buildMaterialAlert(BuildContext context) {
-    showDialog(context: context, builder: (context){
-      return AlertDialog(title: Text('Dersi silinecektir!'),content: Text('Dersi silmek istediğinize emin misiniz?'),
-      actions: [TextButton(onPressed: (
-
-      ){
-        widget.removeCourse(widget.course);
-        saveCourses();
-        Navigator.of(context).pop();
-      }, child: const Text('Evet')),TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Hayır'))],);
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Dersi silinecektir!'),
+            content: Text('Dersi silmek istediğinize emin misiniz?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    widget.removeCourse(widget.course);
+                    saveCourses();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Evet')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Hayır'))
+            ],
+          );
+        });
   }
-  
+
   void _buildCupertinoAlert(BuildContext context) {
-    showDialog(context: context, builder: (context){
-      return CupertinoAlertDialog(title: Text('Dersi silinecektir!'),content: Text('Dersi silmek istediğinize emin misiniz?'),
-      actions: [TextButton(onPressed: (){
-        widget.removeCourse(widget.course);
-        saveCourses();
-        Navigator.of(context).pop();
-      }, child: const Text('Evet')),TextButton(onPressed: (){
-        Navigator.of(context).pop();
-      }, child: const Text('Hayır'))],);
-    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('Dersi silinecektir!'),
+            content: Text('Dersi silmek istediğinize emin misiniz?'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    widget.removeCourse(widget.course);
+                    saveCourses();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Evet')),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Hayır'))
+            ],
+          );
+        });
   }
-
-
-  
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
         show(context);
-        
       },
       onTap: () {
         Navigator.push(
@@ -378,7 +405,7 @@ void show(BuildContext context){
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700),
                             )))
-                        :  const Text("")
+                        : const Text("")
                   ],
                 ),
                 Padding(
@@ -410,26 +437,33 @@ void show(BuildContext context){
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(18),
                                       child: CircularProgressIndicator(
-                                        color: const Color.fromRGBO(33, 217, 233, 1),
+                                        color: const Color.fromRGBO(
+                                            33, 217, 233, 1),
                                         value: e.grade / 100,
                                       ),
                                     ),
                                     Center(
-                                        child: Text(e.grade.round().toString(), style:  GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  color: Color.fromRGBO(48, 64, 98, 1),
-                                  
-                                  fontWeight: FontWeight.w600),
-                            ),))
+                                        child: Text(
+                                      e.grade.round().toString(),
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                            color:
+                                                Color.fromRGBO(48, 64, 98, 1),
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ))
                                   ]),
                                   Padding(
                                       padding: const EdgeInsets.only(top: 5),
-                                      child: Text(e.name , style: GoogleFonts.montserrat(
-                              textStyle: const TextStyle(
-                                  color: Color.fromRGBO(48, 64, 98, 1),
-                                  
-                                  fontWeight: FontWeight.w500),
-                            ),))
+                                      child: Text(
+                                        e.name,
+                                        style: GoogleFonts.montserrat(
+                                          textStyle: const TextStyle(
+                                              color:
+                                                  Color.fromRGBO(48, 64, 98, 1),
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ))
                                 ],
                               ))
                           .toList()),
