@@ -6,7 +6,7 @@ class DataHelper {
   }
 
   static List<String> _createcontents() {
-    return ["Vize", "Odev", "Quiz", "Final"];
+    return ["Vize", "Ödev", "Quiz", "Final"];
   }
 
   static List<double> _createRatio() {
@@ -45,8 +45,8 @@ class DataHelper {
   static List<DropdownMenuItem<double>> allCourseLetters() {
     return _createCourseLetters()
         .map((e) => DropdownMenuItem<double>(
-              child: Text(e),
               value: _letterToGrade(e),
+              child: Text(e),
             ))
         .toList();
   }
@@ -54,8 +54,8 @@ class DataHelper {
   static List<DropdownMenuItem<String>> allContents() {
     return _createcontents()
         .map((e) => DropdownMenuItem(
-              child: Text(e),
               value: e,
+              child: Text(e),
             ))
         .toList();
   }
@@ -63,8 +63,8 @@ class DataHelper {
   static List<DropdownMenuItem<double>> allRatio() {
     return _createRatio()
         .map((e) => DropdownMenuItem<double>(
-              child: Text(e.toString()),
               value: e,
+              child: Text(e.toString()),
             ))
         .toList();
   }
@@ -73,8 +73,8 @@ class DataHelper {
     return List.generate(10, (index) => (index + 1))
         .toList()
         .map((e) => DropdownMenuItem(
-              child: Text(e.toString()),
               value: e.toDouble(),
+              child: Text(e.toString()),
             ))
         .toList();
   }

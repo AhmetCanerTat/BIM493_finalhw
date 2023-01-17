@@ -5,12 +5,14 @@ import 'package:bim493_finalhw/main.dart';
 import 'package:bim493_finalhw/pages/add_course.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
 import 'package:bim493_finalhw/widgets/error_dialog.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
@@ -69,12 +71,12 @@ class _CoursesState extends State<Courses> {
     return Scaffold(
       floatingActionButton: SpeedDial(
         animationCurve: Curves.bounceInOut,
-        childMargin: EdgeInsets.symmetric(vertical: 20),
+        childMargin: const EdgeInsets.symmetric(vertical: 20),
         animatedIcon: AnimatedIcons.view_list,
-        backgroundColor: Sabitler.anaRenk,
+        backgroundColor: Constants.anaRenk,
         children: [
           SpeedDialChild(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               backgroundColor: Colors.green,
               label: 'Ders Ekle',
               onTap: () {
@@ -82,7 +84,7 @@ class _CoursesState extends State<Courses> {
                     MaterialPageRoute(builder: (c) => const AddCourse()));
               }),
           SpeedDialChild(
-              child: Icon(Icons.remove_red_eye_outlined),
+              child: const Icon(Icons.remove_red_eye_outlined),
               backgroundColor: Colors.purple,
               label: 'Dersleri gör',
               onTap: () {
@@ -90,7 +92,7 @@ class _CoursesState extends State<Courses> {
                     MaterialPageRoute(builder: (c) => const Courses()));
               }),
           SpeedDialChild(
-              child: Icon(Icons.logout),
+              child: const Icon(Icons.logout),
               backgroundColor: Colors.grey,
               label: 'Çıkış Yap',
               onTap: () {
@@ -103,13 +105,15 @@ class _CoursesState extends State<Courses> {
       appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          title: Text("DERSLER",
-              style: GoogleFonts.raleway(
-                textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w400),
-              ))),
+          title: Center(
+            child: Text("DERSLER",
+                style: GoogleFonts.raleway(
+                  textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400),
+                )),
+          )),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -128,26 +132,27 @@ class _CoursesState extends State<Courses> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Spacer(
+                const Spacer(
                   flex: 2,
                 ),
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(('Genel Not'),
                             style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                   color: Color.fromRGBO(48, 64, 98, 1),
                                   fontSize: 25,
                                   fontWeight: FontWeight.w700),
                             )),
                         Text(
-                            'Ortalamasi : ${calculateAverage().toStringAsFixed(2)}',
+                            'Ortalaması : ${calculateAverage() == 0 ?
+                            (calculateAverage().toStringAsFixed(2)):0}',
                             style: GoogleFonts.montserrat(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                   color: Color.fromRGBO(48, 64, 98, 1),
                                   fontSize: 25,
                                   fontWeight: FontWeight.w700),
@@ -182,7 +187,7 @@ class _CoursesState extends State<Courses> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
-                                  .copyWith(color: Sabitler.anaRenk)),
+                                  .copyWith(color: Constants.anaRenk)),
                         ),
                       ),
                     ),
@@ -193,6 +198,58 @@ class _CoursesState extends State<Courses> {
     );
   }
 }
+
+
+
+class PlatformAlert{
+  final String title;
+  final String message;
+ 
+
+  PlatformAlert(this.title, this.message);
+  
+void show(BuildContext context){
+  final platform = Theme.of(context).platform;
+
+  if(platform == TargetPlatform.iOS){
+    _buildCupertinoAlert(context);
+  }else{
+    _buildMaterialAlert(context);
+  }
+
+
+
+
+
+}
+
+  void _buildMaterialAlert(BuildContext context) {
+    showDialog(context: context, builder: (context){
+      return AlertDialog(title: Text(title),content: Text(message),
+      actions: [TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Evet')),TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Hayır'))],);
+    });
+  }
+  
+  void _buildCupertinoAlert(BuildContext context) {
+    showDialog(context: context, builder: (context){
+      return CupertinoAlertDialog(title: Text(title),content: Text(message),
+      actions: [TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Evet')),TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Hayır'))],);
+    });
+  }
+
+
+}
+
+
+
 
 class CourseCard extends StatefulWidget {
   final Course course;
@@ -211,6 +268,7 @@ class CourseCard extends StatefulWidget {
   State<CourseCard> createState() => _CourseCardState();
 }
 
+
 class _CourseCardState extends State<CourseCard> {
   Future<void> saveCourses() async {
     final prefs = await SharedPreferences.getInstance();
@@ -218,15 +276,53 @@ class _CourseCardState extends State<CourseCard> {
     prefs.setString("courses", jsonEncode(courses));
   }
 
+void show(BuildContext context){
+  final platform = Theme.of(context).platform;
+
+  if(platform == TargetPlatform.iOS){
+    _buildCupertinoAlert(context);
+  }else{
+    _buildMaterialAlert(context);
+  }
+}
+
+  void _buildMaterialAlert(BuildContext context) {
+    showDialog(context: context, builder: (context){
+      return AlertDialog(title: Text('Dersi silinecektir!'),content: Text('Dersi silmek istediğinize emin misiniz?'),
+      actions: [TextButton(onPressed: (
+
+      ){
+        widget.removeCourse(widget.course);
+        saveCourses();
+        Navigator.of(context).pop();
+      }, child: const Text('Evet')),TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Hayır'))],);
+    });
+  }
+  
+  void _buildCupertinoAlert(BuildContext context) {
+    showDialog(context: context, builder: (context){
+      return CupertinoAlertDialog(title: Text('Dersi silinecektir!'),content: Text('Dersi silmek istediğinize emin misiniz?'),
+      actions: [TextButton(onPressed: (){
+        widget.removeCourse(widget.course);
+        saveCourses();
+        Navigator.of(context).pop();
+      }, child: const Text('Evet')),TextButton(onPressed: (){
+        Navigator.of(context).pop();
+      }, child: const Text('Hayır'))],);
+    });
+  }
+
+
+  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        ErrorDialog(
-          message: 'silmek istediginize emin misiniz',
-        );
-        widget.removeCourse(widget.course);
-        saveCourses();
+        show(context);
+        
       },
       onTap: () {
         Navigator.push(
@@ -240,27 +336,27 @@ class _CourseCardState extends State<CourseCard> {
         });
       },
       child: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 10,
           right: 10,
           top: 10,
         ),
         child: Container(
-          margin: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Sabitler.anaRenk.withOpacity(0.6),
+                color: Constants.anaRenk.withOpacity(0.6),
                 blurRadius: 5,
                 spreadRadius: 2,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -275,14 +371,14 @@ class _CourseCardState extends State<CourseCard> {
                               fontWeight: FontWeight.w600),
                         )),
                     widget.course.gradeAverage != 0
-                        ? (Text(widget.course.gradeAverage.toString(),
+                        ? (Text(widget.course.gradeAverage.toStringAsFixed(2),
                             style: GoogleFonts.montserrat(
                               textStyle: const TextStyle(
                                   color: Color.fromRGBO(48, 64, 98, 1),
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700),
                             )))
-                        : Text("tum notlar girilmemis")
+                        :  const Text("")
                   ],
                 ),
                 Padding(
@@ -297,14 +393,14 @@ class _CourseCardState extends State<CourseCard> {
                               borderRadius: BorderRadius.circular(10),
                               child: LinearProgressIndicator(
                                 backgroundColor: Colors.white,
-                                color: Color.fromRGBO(33, 217, 233, 1),
+                                color: const Color.fromRGBO(33, 217, 233, 1),
                                 value: widget.course.gradeAverage / 100,
                               ),
                             ),
                           ))
                         : null),
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: widget.course.contents
@@ -314,16 +410,26 @@ class _CourseCardState extends State<CourseCard> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(18),
                                       child: CircularProgressIndicator(
-                                        color: Color.fromRGBO(33, 217, 233, 1),
+                                        color: const Color.fromRGBO(33, 217, 233, 1),
                                         value: e.grade / 100,
                                       ),
                                     ),
                                     Center(
-                                        child: Text(e.grade.round().toString()))
+                                        child: Text(e.grade.round().toString(), style:  GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  
+                                  fontWeight: FontWeight.w600),
+                            ),))
                                   ]),
                                   Padding(
-                                      padding: EdgeInsets.only(top: 5),
-                                      child: Text(e.name))
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Text(e.name , style: GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  
+                                  fontWeight: FontWeight.w500),
+                            ),))
                                 ],
                               ))
                           .toList()),

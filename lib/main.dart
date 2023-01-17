@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Ortalama Hesapla',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Sabitler.anaRenk,
+          primaryColor: Constants.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
       //darkTheme: ThemeData.dark(),
       //themeMode: ThemeMode.,

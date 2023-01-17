@@ -32,7 +32,7 @@ TextField reuseableTextField(String text, IconData icon, bool isPasswordType, bo
       labelStyle: TextStyle(color: Colors.grey.withOpacity(0.7)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Sabitler.anaRenk.withOpacity(0.3),
+      fillColor: Constants.anaRenk.withOpacity(0.3),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
@@ -67,7 +67,7 @@ Container signInSignOutButton(BuildContext context, bool isLogin,
             if (states.contains(MaterialState.pressed)) {
               return Colors.white70;
             }
-            return Sabitler.anaRenk;
+            return Constants.anaRenk;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),

@@ -4,6 +4,7 @@ import 'package:bim493_finalhw/pages/courses.dart';
 import 'package:bim493_finalhw/pages/grade_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Authentication/signin_screen.dart';
@@ -11,8 +12,8 @@ import '../constants/app_constants.dart';
 import '../helper/data_helper.dart';
 import '../model/content.dart';
 import '../model/course.dart';
-import '../model/ders.dart';
-import '../widgets/ortalama_goster.dart';
+
+
 
 class AddCourse extends StatefulWidget {
   const AddCourse({super.key});
@@ -29,7 +30,7 @@ class _AddCourseState extends State<AddCourse> {
   List<Content> allContents = [];
   bool courseSave = false;
   var formKey = GlobalKey<FormState>();
-  List<Ders> tumDersler = [];
+
 
   String chosenContentName = "Vize";
   double chosenContentRatio = 0.5;
@@ -80,7 +81,12 @@ class _AddCourseState extends State<AddCourse> {
         title: Center(
           child: Text(
             'Ders Ekle',
-            style: Sabitler.textStyle(24, FontWeight.w900, Sabitler.anaRenk),
+            style:GoogleFonts.raleway(
+                  textStyle: TextStyle(
+                      color: Constants.anaRenk,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400),
+                ),
           ),
         ),
       ),
@@ -107,11 +113,11 @@ class _AddCourseState extends State<AddCourse> {
                           child: ListTile(
                             title: Text(allContents[index].name),
                             leading: CircleAvatar(
-                              backgroundColor: Sabitler.anaRenk,
+                              backgroundColor: Constants.anaRenk,
                               child: Text('' + (allContents.length).toString()),
                             ),
                             subtitle: Text(
-                                'Etkileme Orani ${allContents[index].ratio}'),
+                                'Etkileme Oranı ${allContents[index].ratio}'),
                           ),
                         ),
                       ),
@@ -129,12 +135,12 @@ class _AddCourseState extends State<AddCourse> {
                             child: Center(
                               child: Text(
                                   courseSave
-                                      ? ('Lutfen ders iceriklerini seciniz')
+                                      ? ('Lütfen ders içeriklerini seçiniz')
                                       : ('Lütfen ders ismi giriniz'),
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline5!
-                                      .copyWith(color: Sabitler.anaRenk)),
+                                      .copyWith(color: Constants.anaRenk)),
                             ),
                           ),
                         ),
@@ -153,7 +159,7 @@ class _AddCourseState extends State<AddCourse> {
                 }), //ekleme yapilacak
                 style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Sabitler.anaRenk)),
+                        MaterialStateProperty.all<Color>(Constants.anaRenk)),
                 child: Text("Dersi Kaydet"),
               ),
             ),
@@ -164,7 +170,7 @@ class _AddCourseState extends State<AddCourse> {
         animationCurve: Curves.bounceInOut,
         childMargin: EdgeInsets.symmetric(vertical: 20),
         animatedIcon: AnimatedIcons.view_list,
-        backgroundColor: Sabitler.anaRenk,
+        backgroundColor: Constants.anaRenk,
         children: [
           SpeedDialChild(
               child: Icon(Icons.add),
@@ -224,7 +230,7 @@ class _AddCourseState extends State<AddCourse> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all<Color>(Sabitler.anaRenk),
+                            MaterialStateProperty.all<Color>(Constants.anaRenk),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24.0),
                         ))),
@@ -241,7 +247,7 @@ class _AddCourseState extends State<AddCourse> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(courseSave ? ("Sifirla") : ("Kaydet"),
+                          Text(courseSave ? ("Sıfırla") : ("Kaydet"),
                               style: const TextStyle(color: Colors.white)),
                           const Expanded(
                             child: Icon(
@@ -293,7 +299,7 @@ class _AddCourseState extends State<AddCourse> {
                         },
                         icon: const Icon(
                           Icons.arrow_forward_ios_sharp,
-                          color: Sabitler.anaRenk,
+                          color: Constants.anaRenk,
                           size: 30,
                         ),
                       ),
@@ -311,25 +317,20 @@ class _AddCourseState extends State<AddCourse> {
       onSaved: (name) {
         enteredCourseName = name!;
       },
-      // validator: (s) {
-      //   if (s!.length <= 0) {
-      //     return 'Boş bırakma ders adını';
-      //   } else
-      //     return null;
-      // },
+
       enabled: !courseSave,
       controller: fieldText,
       decoration: InputDecoration(
-          hintText: 'Ders Ismi',
+          hintText: 'Ders İsmi',
           border: OutlineInputBorder(
-            borderRadius: Sabitler.borderRadius,
+            borderRadius: Constants.borderRadius,
             borderSide: const BorderSide(
               width: 0,
               style: BorderStyle.none,
             ),
           ),
           filled: true,
-          fillColor: Sabitler.anaRenk.withOpacity(0.3)),
+          fillColor: Constants.anaRenk.withOpacity(0.3)),
     );
   }
 
@@ -337,12 +338,12 @@ class _AddCourseState extends State<AddCourse> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.withOpacity(0.4),
+        color: Constants.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<String>(
-        iconEnabledColor: Sabitler.anaRenk,
+        iconEnabledColor: Constants.anaRenk,
         elevation: 16,
         items: DataHelper.allContents(),
         underline: Container(),
@@ -360,12 +361,12 @@ class _AddCourseState extends State<AddCourse> {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Sabitler.anaRenk.withOpacity(0.4),
+        color: Constants.anaRenk.withOpacity(0.4),
         borderRadius: BorderRadius.circular(24),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: DropdownButton<double>(
-        iconEnabledColor: Sabitler.anaRenk,
+        iconEnabledColor: Constants.anaRenk,
         elevation: 16,
         items: DataHelper.allRatio(),
         underline: Container(),

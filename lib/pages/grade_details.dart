@@ -118,13 +118,13 @@ class _GradeDetailsState extends State<GradeDetails> {
                               child: Container(
                                 alignment: Alignment.bottomRight,
                                 decoration: BoxDecoration(
-                                  color: Sabitler.anaRenk.withOpacity(0.4),
+                                  color: Constants.anaRenk.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 8),
                                 child: DropdownButton<double>(
-                                  iconEnabledColor: Sabitler.anaRenk,
+                                  iconEnabledColor: Constants.anaRenk,
                                   elevation: 16,
                                   items: DataHelper.allCourseLetters(),
                                   underline: Container(),
@@ -147,13 +147,13 @@ class _GradeDetailsState extends State<GradeDetails> {
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  color: Sabitler.anaRenk.withOpacity(0.4),
+                                  color: Constants.anaRenk.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(24),
                                 ),
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 8),
                                 child: DropdownButton<double>(
-                                  iconEnabledColor: Sabitler.anaRenk,
+                                  iconEnabledColor: Constants.anaRenk,
                                   elevation: 16,
                                   items: DataHelper.allCredits(),
                                   underline: Container(),
@@ -207,16 +207,26 @@ class _GradeCardState extends State<GradeCard> {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(widget.content.name),
-        subtitle: Text("Etkileme orani: ${widget.content.ratio}"),
+        title: Text(widget.content.name ,style:  GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  
+                                  fontWeight: FontWeight.w600),
+                            ),),
+        subtitle: Text("Etkileme orani: ${widget.content.ratio}", style:  GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  
+                                  fontWeight: FontWeight.w400),
+                            ),),
         trailing: SizedBox(
-          width: 120,
+          width: 130,
           height: 50,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             textBaseline: TextBaseline.alphabetic,
             crossAxisAlignment: CrossAxisAlignment.baseline,
-            children: [
+            children: [             
               Expanded(
                   child: gradeSave
                       ? TextFormField(
@@ -224,7 +234,6 @@ class _GradeCardState extends State<GradeCard> {
                           keyboardType: TextInputType.number,
                           onEditingComplete: () {
                             widget.content.grade = double.parse(fieldText.text);
-
                             setState(() {
                               gradeSave = false;
                               widget.function();
@@ -233,18 +242,34 @@ class _GradeCardState extends State<GradeCard> {
                         )
                       : Text(
                           "${widget.content.grade.toString()}/100",
+
+                        style:GoogleFonts.montserrat(
+                              textStyle: const TextStyle(
+                                  color: Color.fromRGBO(48, 64, 98, 1),
+                                  
+                                  fontWeight: FontWeight.w400),
+                            ) ,
                         )),
               Expanded(
                 child: IconButton(
-                    onPressed: () {
+                    onPressed: () {if(gradeSave == true){
+                      widget.content.grade = double.parse(fieldText.text);
+                            setState(() {
+                              gradeSave = false;
+                              widget.function();
+                            });
+                    }else{
+                      gradeSave = true;
                       setState(() {
-                        gradeSave = true;
+                        
                       });
+                    }
                     },
-                    icon: Icon(
-                      Icons.edit,
-                      size: 20,
-                    )),
+                    icon: !gradeSave ? Icon(
+                     (Icons.edit),
+                    color: Constants.anaRenk,
+                      size: 25,
+                    ): Icon(Icons.check, size: 30, color: Constants.anaRenk,)),
               )
             ],
           ),

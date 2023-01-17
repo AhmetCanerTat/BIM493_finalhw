@@ -2,7 +2,7 @@ import 'package:bim493_finalhw/pages/courses.dart';
 
 import 'package:flutter/material.dart';
 
-import '../home_screen.dart';
+
 import '../widgets/error_dialog.dart';
 
 import '../widgets/reuseable_widget.dart';
@@ -16,8 +16,8 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
 
   formValidation() {
     if (_emailTextController.text.isNotEmpty &&
@@ -68,17 +68,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               reuseableTextField('Email', Icons.person_outline, false, true,
                   _emailTextController),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               reuseableTextField('Password', Icons.lock_outline, true, true,
                   _passwordTextController),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               signInSignOutButton(context, true, () {
                 formValidation();
               }),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               signUpOption(context)
             ],
           ),
@@ -92,16 +92,16 @@ Row signUpOption(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(
+      const Text(
         "Don't have Account? ",
         style: TextStyle(color: Colors.black),
       ),
       GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+              context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
         },
-        child: Text(
+        child: const Text(
           "Sign Up",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
