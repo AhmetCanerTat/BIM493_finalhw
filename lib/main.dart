@@ -1,10 +1,10 @@
-import 'package:bim493_finalhw/widgets/ortalama_app.dart';
-import 'package:flutter/material.dart';
+import 'package:bim493_finalhw/splashScreen/splashScreen.dart';
 
+import 'package:flutter/material.dart';
 
 import 'constants/app_constants.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
@@ -15,9 +15,11 @@ class MyApp extends StatelessWidget {
       title: 'Ortalama Hesapla',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Sabitler.anaRenk,
+          primaryColor: Constants.anaRenk,
           visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: OrtalamaHesapla(),
+      //darkTheme: ThemeData.dark(),
+      //themeMode: ThemeMode.,
+      home: MySplashScreen(),
     );
   }
 }

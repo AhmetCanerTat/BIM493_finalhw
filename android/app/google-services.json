@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "528056598547",
+    "project_id": "bim493-final-project",
+    "storage_bucket": "bim493-final-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528056598547:android:87bf2164c75bb66baa7fe6",
+        "android_client_info": {
+          "package_name": "com.example.bim493_finalhw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528056598547-6bnrh5oq1sb3ge9ftenbm54jhfh1armg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDByGg6jL5C6ooTaUxqC343Ckjk-dJtVtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528056598547-6bnrh5oq1sb3ge9ftenbm54jhfh1armg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
