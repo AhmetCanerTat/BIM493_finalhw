@@ -1,4 +1,5 @@
-import 'package:bim493_finalhw/splashScreen/splashScreen.dart';
+import 'package:bim493_finalhw/pages/courses.dart';
+
 
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity),
       //darkTheme: ThemeData.dark(),
       //themeMode: ThemeMode.,
-      home: MySplashScreen(),
+      home: Courses(),
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Authentication/signin_screen.dart';
 import '../constants/app_constants.dart';
 import '../helper/data_helper.dart';
 import '../model/content.dart';
@@ -194,14 +193,6 @@ class _AddCourseState extends State<AddCourse> {
               onTap: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const Courses()));
-              }),
-          SpeedDialChild(
-              child: const Icon(Icons.logout),
-              backgroundColor: Colors.grey,
-              label: 'Çıkış Yap',
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (c) => const SignInScreen()));
               }),
         ],
       ),
