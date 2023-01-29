@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bim493_finalhw/pages/courses.dart';
-import 'package:bim493_finalhw/pages/grade_details.dart';
+import 'package:bim493_finalhw/widgets/platform_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +12,6 @@ import '../constants/app_constants.dart';
 import '../helper/data_helper.dart';
 import '../model/content.dart';
 import '../model/course.dart';
-
-
 
 class AddCourse extends StatefulWidget {
   const AddCourse({super.key});
@@ -30,7 +28,6 @@ class _AddCourseState extends State<AddCourse> {
   List<Content> allContents = [];
   bool courseSave = false;
   var formKey = GlobalKey<FormState>();
-
 
   String chosenContentName = "Vize";
   double chosenContentRatio = 0.5;
@@ -81,12 +78,12 @@ class _AddCourseState extends State<AddCourse> {
         title: Center(
           child: Text(
             'Ders Ekle',
-            style:GoogleFonts.raleway(
-                  textStyle: TextStyle(
-                      color: Constants.anaRenk,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400),
-                ),
+            style: GoogleFonts.raleway(
+              textStyle: const TextStyle(
+                  color: Constants.anaRenk,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400),
+            ),
           ),
         ),
       ),
@@ -111,13 +108,23 @@ class _AddCourseState extends State<AddCourse> {
                         padding: const EdgeInsets.all(2),
                         child: Card(
                           child: ListTile(
-                            title: Text(allContents[index].name),
+                            title: Text(allContents[index].name,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(48, 64, 98, 1),
+                                    fontWeight: FontWeight.w600)),
                             leading: CircleAvatar(
                               backgroundColor: Constants.anaRenk,
-                              child: Text('' + (allContents.length).toString()),
+                              child: Text(
+                                '' + (allContents.length).toString(),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             ),
                             subtitle: Text(
-                                'Etkileme Oranı ${allContents[index].ratio}'),
+                                'Etkileme Oranı ${allContents[index].ratio}',
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(48, 64, 98, 1),
+                                    fontWeight: FontWeight.w400)),
                           ),
                         ),
                       ),
@@ -149,7 +156,7 @@ class _AddCourseState extends State<AddCourse> {
                   ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.only(bottom: 20),
             child: Center(
               child: ElevatedButton(
                 onPressed: (() {
@@ -160,7 +167,7 @@ class _AddCourseState extends State<AddCourse> {
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Constants.anaRenk)),
-                child: Text("Dersi Kaydet"),
+                child: const Text("Dersi Kaydet"),
               ),
             ),
           )
@@ -168,32 +175,32 @@ class _AddCourseState extends State<AddCourse> {
       ),
       floatingActionButton: SpeedDial(
         animationCurve: Curves.bounceInOut,
-        childMargin: EdgeInsets.symmetric(vertical: 20),
+        childMargin: const EdgeInsets.symmetric(vertical: 20),
         animatedIcon: AnimatedIcons.view_list,
         backgroundColor: Constants.anaRenk,
         children: [
           SpeedDialChild(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               backgroundColor: Colors.green,
               label: 'Ders Ekle',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const AddCourse()));
               }),
           SpeedDialChild(
-              child: Icon(Icons.remove_red_eye_outlined),
+              child: const Icon(Icons.remove_red_eye_outlined),
               backgroundColor: Colors.purple,
               label: 'Dersleri gör',
               onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (c) => Courses()));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (c) => const Courses()));
               }),
           SpeedDialChild(
-              child: Icon(Icons.logout),
+              child: const Icon(Icons.logout),
               backgroundColor: Colors.grey,
               label: 'Çıkış Yap',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const SignInScreen()));
               }),
         ],
@@ -282,19 +289,27 @@ class _AddCourseState extends State<AddCourse> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                           ),
-                          child: _buildKrediler(),
+                          child: _buildRatio(),
                         ),
                       ),
                       IconButton(
                         onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            formKey.currentState!.save();
-                            var content =
-                                Content(chosenContentName, chosenContentRatio);
-                            chosenCourse?.addContent(content);
-                            setState(() {
-                              allContents.insert(0, content);
-                            });
+                          if (!checkRatio()) {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              var content = Content(
+                                  chosenContentName, chosenContentRatio);
+                              chosenCourse?.addContent(content);
+                              setState(() {
+                                allContents.insert(0, content);
+                              });
+                            }
+                          } else {
+                            var alert = PlatformAlert(
+                                title: "Oran 1'in üstünde",
+                                message: "Oran 1'in üstünde olamaz",
+                                type: 1);
+                            alert.show(context);
                           }
                         },
                         icon: const Icon(
@@ -317,7 +332,6 @@ class _AddCourseState extends State<AddCourse> {
       onSaved: (name) {
         enteredCourseName = name!;
       },
-
       enabled: !courseSave,
       controller: fieldText,
       decoration: InputDecoration(
@@ -357,7 +371,7 @@ class _AddCourseState extends State<AddCourse> {
     );
   }
 
-  Widget _buildKrediler() {
+  Widget _buildRatio() {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -378,5 +392,17 @@ class _AddCourseState extends State<AddCourse> {
         value: chosenContentRatio,
       ),
     );
+  }
+
+  bool checkRatio() {
+    double ratiosum = 0;
+    for (Content content in allContents) {
+      ratiosum += content.ratio;
+    }
+    if (ratiosum == 1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -88,7 +88,7 @@ class _CoursesState extends State<Courses> {
               backgroundColor: Colors.purple,
               label: 'Dersleri gör',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const Courses()));
               }),
           SpeedDialChild(
@@ -96,7 +96,7 @@ class _CoursesState extends State<Courses> {
               backgroundColor: Colors.grey,
               label: 'Çıkış Yap',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const SignInScreen()));
               }),
         ],
@@ -198,68 +198,6 @@ class _CoursesState extends State<Courses> {
   }
 }
 
-class PlatformAlert {
-  final String title;
-  final String message;
-
-  PlatformAlert(this.title, this.message);
-
-  void show(BuildContext context) {
-    final platform = Theme.of(context).platform;
-
-    if (platform == TargetPlatform.iOS) {
-      _buildCupertinoAlert(context);
-    } else {
-      _buildMaterialAlert(context);
-    }
-  }
-
-  void _buildMaterialAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Evet')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Hayır'))
-            ],
-          );
-        });
-  }
-
-  void _buildCupertinoAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: Text(title),
-            content: Text(message),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Evet')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Hayır'))
-            ],
-          );
-        });
-  }
-}
 
 class CourseCard extends StatefulWidget {
   final Course course;
