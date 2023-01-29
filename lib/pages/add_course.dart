@@ -13,8 +13,6 @@ import '../helper/data_helper.dart';
 import '../model/content.dart';
 import '../model/course.dart';
 
-
-
 class AddCourse extends StatefulWidget {
   const AddCourse({super.key});
 
@@ -30,7 +28,6 @@ class _AddCourseState extends State<AddCourse> {
   List<Content> allContents = [];
   bool courseSave = false;
   var formKey = GlobalKey<FormState>();
-
 
   String chosenContentName = "Vize";
   double chosenContentRatio = 0.5;
@@ -81,12 +78,12 @@ class _AddCourseState extends State<AddCourse> {
         title: Center(
           child: Text(
             'Ders Ekle',
-            style:GoogleFonts.raleway(
-                  textStyle: TextStyle(
-                      color: Constants.anaRenk,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400),
-                ),
+            style: GoogleFonts.raleway(
+              textStyle: TextStyle(
+                  color: Constants.anaRenk,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400),
+            ),
           ),
         ),
       ),
@@ -111,13 +108,23 @@ class _AddCourseState extends State<AddCourse> {
                         padding: const EdgeInsets.all(2),
                         child: Card(
                           child: ListTile(
-                            title: Text(allContents[index].name),
+                            title: Text(allContents[index].name,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(48, 64, 98, 1),
+                                    fontWeight: FontWeight.w600)),
                             leading: CircleAvatar(
                               backgroundColor: Constants.anaRenk,
-                              child: Text('' + (allContents.length).toString()),
+                              child: Text(
+                                '' + (allContents.length).toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             ),
                             subtitle: Text(
-                                'Etkileme Oranı ${allContents[index].ratio}'),
+                                'Etkileme Oranı ${allContents[index].ratio}',
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(48, 64, 98, 1),
+                                    fontWeight: FontWeight.w400)),
                           ),
                         ),
                       ),
@@ -177,7 +184,7 @@ class _AddCourseState extends State<AddCourse> {
               backgroundColor: Colors.green,
               label: 'Ders Ekle',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const AddCourse()));
               }),
           SpeedDialChild(
@@ -185,7 +192,7 @@ class _AddCourseState extends State<AddCourse> {
               backgroundColor: Colors.purple,
               label: 'Dersleri gör',
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (c) => Courses()));
               }),
           SpeedDialChild(
@@ -193,7 +200,7 @@ class _AddCourseState extends State<AddCourse> {
               backgroundColor: Colors.grey,
               label: 'Çıkış Yap',
               onTap: () {
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (c) => const SignInScreen()));
               }),
         ],
@@ -317,7 +324,6 @@ class _AddCourseState extends State<AddCourse> {
       onSaved: (name) {
         enteredCourseName = name!;
       },
-
       enabled: !courseSave,
       controller: fieldText,
       decoration: InputDecoration(
